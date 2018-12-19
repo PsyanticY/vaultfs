@@ -4,6 +4,7 @@ import os
 import sys
 import errno
 from vault_api import get_secrets
+from logger import VaultfsLogger
 
 from fuse import FUSE, FuseOSError, Operations
 
@@ -13,6 +14,7 @@ class Passthrough(Operations):
         self.root = root
         self.remote = remote
         self.payload = payload
+        self.log = VaultfsLogger()
         self.secrets_path = secrets_path
         #self.data_key = data_key
 
