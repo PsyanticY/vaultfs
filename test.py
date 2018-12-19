@@ -131,7 +131,7 @@ class Passthrough(Operations):
 
 
 def main(mountpoint, root):
-    FUSE(Passthrough(root, "https://blabla:8200", "test.json", ["sharedProd", "mvdDev"]), mountpoint, nothreads=True, foreground=True)
+    FUSE(Passthrough(root, "https://blabla.com:8200", "test.json", ["sharedProd", "mvdDev"]), mountpoint, nothreads=True, foreground=True)
 
 if __name__ == '__main__':
     main(sys.argv[2], sys.argv[1])

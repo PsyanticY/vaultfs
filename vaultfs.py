@@ -131,7 +131,7 @@ class Vaultfs(Operations):
 
 
 def main(mountpoint, root):
-    FUSE(Vaultds(root, "https://blabla:8200", "test.json", ["sharedProd", "mvdDev"]), mountpoint, nothreads=True, foreground=True)
+    FUSE(Vaultfs(root, "https://blabla.com:8200", "test.json", ["sharedProd", "mvdDev"]), mountpoint, nothreads=True, foreground=True)
 
 if __name__ == '__main__':
     main(sys.argv[2], sys.argv[1])
