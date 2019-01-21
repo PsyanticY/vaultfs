@@ -1,5 +1,5 @@
 # vaultfs
-A fuse filesystem as vault as source for secrets.
+Hashicorp Vault fuse filesystem
 
 *This is a WIP*
 
