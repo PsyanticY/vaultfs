@@ -26,6 +26,7 @@ if __name__ == '__main__':
 
     mountpoint = args.mountpoint
     local = args.local
+    #TODO: Fix trailing /
     remote = args.remote
     secrets_path = args.secrets_path
     payload = args.payload
