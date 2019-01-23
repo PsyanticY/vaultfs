@@ -1,9 +1,9 @@
 import argparse
 from fuse import FUSE
-from Vault_fuse import Vault_fuse
+from vault_fuse import vault_fuse
 
-def vaultfs(mountpoint, local, remote, secrets_path, payload):
-    FUSE(Vault_fuse(local, remote, secrets_path, payload), mountpoint, nothreads=True,
+def vaultfs(mountpoint, local, remote, payload, secrets_path):
+    FUSE(vault_fuse(local, remote, payload, secrets_path), mountpoint, nothreads=True,
          foreground=True)
 
 
@@ -29,5 +29,4 @@ if __name__ == '__main__':
     remote = args.remote
     secrets_path = args.secrets_path
     payload = args.payload
-
-    vaultfs(mountpoint, local, remote, secrets_path, payload)
+    vaultfs(mountpoint, local, remote,  "../test.json", secrets_path)

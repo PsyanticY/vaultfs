@@ -5,9 +5,11 @@ import json
 import sys
 
 def _auth_payload(payload):
+
     if os.path.isfile(payload):
         with open(payload) as f:
             auth_token = f.read()
+            print (auth_token)
         return auth_token.rstrip()
     else:
         pass
@@ -31,16 +33,20 @@ def get_secrets(payload, remote, secret_path, secret_name, data_key='content', t
         print(e.args[0])
         # get a better error message
         sys.exit(1)
-    print (status)
     if status == 404:
         if 'errors' in data:
             #logger
-            print("Warning: Secret not Found in " + "'" + secret_path + "'" + " secret engine")
-            return ("", "NotFound")
+            return ("Warning: Secret not Found in " + "'" + secret_path + "'" + " secret engine", "NotFound")
         #logger()
         if 'warnings' in data:
             print("Error: ", data['warnings'][0])
         # need to check for permissions stuff
-    if status == 200:
+    elif status == 200:
         credentials = data['data']['data'][data_key]
         return (credentials, "Success")
+    else:
+        print(data)
+        return (data, reason)
+        
+
+    
