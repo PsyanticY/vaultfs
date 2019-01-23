@@ -26,8 +26,7 @@ if __name__ == '__main__':
 
     mountpoint = args.mountpoint
     local = args.local
-    #TODO: Fix trailing /
-    remote = args.remote
+    remote = args.remote.rstrip('/')
     secrets_path = args.secrets_path
     payload = args.payload
     vaultfs(mountpoint, local, remote,  payload, secrets_path)
