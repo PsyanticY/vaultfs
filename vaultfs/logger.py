@@ -5,7 +5,7 @@ import logging
 class Formatter(logging.Formatter):
 
     def __init__(self):
-        super().__init__(fmt="%(name)s :: %(asctime)s :: %(levelname)s - %(message)s", style='%')
+        super().__init__(fmt="%(name)s::%(asctime)s::%(levelname)s - %(message)s", style='%')
 
     def format(self, record):
 
@@ -15,13 +15,13 @@ class Formatter(logging.Formatter):
 
         # Replace the original format with one customized by logging level
         if record.levelno == logging.WARNING:
-            self._style._fmt = "%(name)s :: %(asctime)s :: WARNING - %(message)s"
+            self._style._fmt = "%(name)s::%(asctime)s::WARNING - %(message)s"
 
         elif record.levelno == logging.INFO:
-            self._style._fmt = "%(name)s :: %(asctime)s :: INFO    - %(message)s"
+            self._style._fmt = "%(name)s::%(asctime)s::INFO - %(message)s"
 
         elif record.levelno == logging.ERROR:
-            self._style._fmt = "%(name)s :: %(asctime)s :: ERROR   - %(message)s"
+            self._style._fmt = "%(name)s::%(asctime)s::ERROR - %(message)s"
 
         result = logging.Formatter.format(self, record)
         self._style._fmt = format_orig
@@ -50,18 +50,3 @@ class VaultfsLogger(object):
 
     def error(self, msg):
         self.logger.error(msg)
-
-
-
-## How to use it
-# from tests import VaultfsLogger
-#
-# my_logger = VaultfsLogger()
-#
-#
-# my_logger.debug("This is a DEBUG-level message")
-# my_logger.info("This is an INFO-level message")
-# my_logger.debug('This is a debug message')
-# my_logger.info('This is an info message')
-# my_logger.warning('This is a warning message')
-# my_logger.error('This is an error message')
