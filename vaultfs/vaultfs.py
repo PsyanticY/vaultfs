@@ -23,7 +23,7 @@ def main():
     parser.add_argument( '-s', '--secrets-path', dest='secrets_path', metavar='', required=True,
         action='append', help='List of secrets path in the Vault server.')
     parser.add_argument( '-p', '--payload', dest='payload', metavar='', required=True,
-        help='List of secrets path in the Vault server.')
+        help='.Vault authentication token')
 
     args = parser.parse_args()
 

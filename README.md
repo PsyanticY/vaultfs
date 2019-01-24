@@ -1,6 +1,31 @@
 # vaultfs
 Hashicorp Vault fuse filesystem
 
+## Setup
+
+```bash
+git clone 
+cd vaultfs
+sudo python3.6 setup.py install
+```
+
+## Usage
+
+```bash
+usage: vaultfs [-h] [-c] -m  -l  -r  -s  -p
+
+Vault fuse file system
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c , --config         Config file.
+  -m , --mountpoint     where the fuse filesystem will be mounted.
+  -l , --local          credentials local path after being pulled from vault.
+  -r , --remote         Vault Server HTTPS address.
+  -s , --secrets-path   List of secrets path in the Vault server.
+  -p , --payload        Vault authentication token.
+```
+
 *This is a WIP*
 
 *THis is what we want to implement*
