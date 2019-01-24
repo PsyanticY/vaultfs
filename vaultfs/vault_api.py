@@ -5,6 +5,24 @@ import os.path
 import json
 import sys
 
+#log = VaultfsLogger()
+def check_remote(remote):
+    try:
+        r = requests.get(remote,timeout=5)
+        # r.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        # implement logger here 
+        #log_api.error(e)
+        sys.exit(1)
+
+def check_local(folder):
+    if os.path.isdir(folder):
+        return
+    else:
+        #log
+        sys.exit(1)
+
+
 def _auth_payload(payload):
 
     if os.path.isfile(payload):
@@ -28,7 +46,7 @@ def get_secrets(payload, remote, secret_path, secret_name, data_key='content', t
         reason = r.reason
         data = r.json()
     except requests.exceptions.RequestException as e:
-        log.error(e.args[0])
+        # log.error(e.args[0])
         # get a better error message
         sys.exit(1)
     if status == 404:
@@ -41,7 +59,6 @@ def get_secrets(payload, remote, secret_path, secret_name, data_key='content', t
         # need to check for permissions stuff
     elif status == 200:
         credentials = data['data']['data'][data_key]
-        log.info("Found key in ", secret_path)
         return (credentials, "Success")
     else:
         return (data, reason)

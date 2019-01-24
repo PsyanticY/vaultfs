@@ -1,6 +1,7 @@
 import argparse
 from fuse import FUSE
 from vault_fuse import vault_fuse
+from vault_api import check_remote, check_local
 
 def vaultfs(mountpoint, local, remote, payload, secrets_path):
     FUSE(vault_fuse(local, remote, payload, secrets_path), mountpoint, nothreads=True,
@@ -9,7 +10,9 @@ def vaultfs(mountpoint, local, remote, payload, secrets_path):
 
 if __name__ == '__main__':
 
+
     # FIXME implement the possibility to get parameters via a config file
+    
     parser = argparse.ArgumentParser(description='Vault fuse file system')
 
     parser.add_argument( '-c', '--config', dest='config', metavar='', required=False, help='Config file.')
@@ -31,4 +34,10 @@ if __name__ == '__main__':
     remote = args.remote.rstrip('/')
     secrets_path = args.secrets_path
     payload = args.payload
+
+    # initial checks
+    check_remote(remote)
+    check_local(local)
+    check_local(mountpoint)
+
     vaultfs(mountpoint, local, remote,  payload, secrets_path)
