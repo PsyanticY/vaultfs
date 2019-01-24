@@ -4,8 +4,8 @@ import os
 import sys
 import errno
 #import time
-from vault_api import get_secrets
-from logger import VaultfsLogger
+from vaultfs.vault_api import get_secrets
+from vaultfs.logger import VaultfsLogger
 
 from fuse import FUSE, FuseOSError, Operations
 

@@ -23,6 +23,7 @@ setup(name='vaultfs',
       author_email='iuns@outlook.fr',
       license='MIT',
       platforms=["Linux"],
+      packages=["vaultfs"],
       install_requires=install_requirements,
       classifiers=[
         'Development Status :: 1 - Development',

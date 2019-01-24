@@ -1,4 +1,4 @@
-from logger import VaultfsLogger
+from vaultfs.logger import VaultfsLogger
 import argparse
 import requests
 import os.path
