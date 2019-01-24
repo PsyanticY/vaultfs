@@ -49,9 +49,11 @@ class vault_fuse(Operations):
         if not os.path.exists(full_path):
             secret_name = os.path.basename(full_path)
             #FIXME The fuck are those files
-            if secret_name not in ".xdg-volume-info" "autorun.inf" :
-
-                self.log.info("looking for secret in the remote vault server")
+            if secret_name in ".xdg-volume-info" "autorun.inf" :
+                pass
+            else:
+                self.log.info("Looking for {} in {}".format(secret_name, self.remote))
+                notFound = 0
                 for i in range(0,len(self.secrets_path)):
                     (result, status) = get_secrets(self.payload, self.remote, self.secrets_path[i], secret_name)
                     if status == "Success":
@@ -60,15 +62,16 @@ class vault_fuse(Operations):
                         f.close()
                         break
                     elif status == "Forbidden":
-                        print ("Forbidden")
-                        #log result
+                        self.log.error("{}: {}".format(status, result))
+                        # quit the loop since we can't authenticate to the server
                         break
                     elif status == "NotFound":
-                        #log result
-                        break 
+                        notFound += 1
                     else : 
-                        # log got an error: status with error result
+                        self.log.error("{}: {}".format(status, result))
                         break
+                if (notFound == len(self.secrets_path)):
+                    self.log.error("Can't find secret {} in provided secret engines: {} ".format(secret_name, ', '.join(self.secrets_path)))
         else:
             pass
             # check checksum and compare files

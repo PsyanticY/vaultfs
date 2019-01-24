@@ -5,17 +5,15 @@ import os.path
 import json
 import sys
 
-log = VaultfsLogger()
 def _auth_payload(payload):
 
     if os.path.isfile(payload):
         with open(payload) as f:
             auth_token = f.read()
-            print (auth_token)
         return auth_token.rstrip()
     else:
         log.error("Can't find the payload file containing the secret token")
-        sys.exit(1)
+        sys.exit(1) # This is not working properly
         # make sure we exit from fuse
 
 # We needs to login as the role-id and get a token that we can use to get secrets
@@ -38,7 +36,8 @@ def get_secrets(payload, remote, secret_path, secret_name, data_key='content', t
             #logger
             return ("Warning: Secret not Found in " + "'" + secret_path + "'" + " secret engine", "NotFound")
         if 'warnings' in data:
-            log.warning(data['warnings'][0])
+            # work on this
+            pass
         # need to check for permissions stuff
     elif status == 200:
         credentials = data['data']['data'][data_key]

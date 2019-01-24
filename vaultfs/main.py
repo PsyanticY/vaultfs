@@ -9,6 +9,7 @@ def vaultfs(mountpoint, local, remote, payload, secrets_path):
 
 if __name__ == '__main__':
 
+    # FIXME implement the possibility to get parameters via a config file
     parser = argparse.ArgumentParser(description='Vault fuse file system')
 
     parser.add_argument( '-c', '--config', dest='config', metavar='', required=False, help='Config file.')
@@ -24,6 +25,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    # FIXME: Add some controls over mountpoint/local (should be a folder), remote should be reachable payload should exist
     mountpoint = args.mountpoint
     local = args.local
     remote = args.remote.rstrip('/')
