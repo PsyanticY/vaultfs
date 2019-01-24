@@ -5,7 +5,7 @@ Hashicorp Vault fuse filesystem
 
 *THis is what we want to implement*
 
-This module requires a mountpoint,a local path and a remote url of the vault
+This module requires a mountpoint,a local path and the remote url of the hashicorp vault
 
 It will also requires a:
 * Token (`payload`) that will allow `vaultfs` to authenticate requests made to the vault 
@@ -14,7 +14,7 @@ It will also requires a:
 
 The intent for this package is to get secrets from the vault server if the secret is not found in the local path.
 
-Programms or human will expect files to be in the mountpoint, `vaultfs` will first fetch them from the vault and copy them to the local path, hitherto the system/programs/human can find the file in the expected destination.
+the system/human will expect files to be in the mountpoint, `vaultfs` will first fetch them from the vault and copy them to the local path, hitherto the system/programs/human can find the file in the expected destination.
 
 TODO:
 Make sure the program checks vault for existing file for new version. (use hashlib)

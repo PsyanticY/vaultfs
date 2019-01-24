@@ -3,6 +3,7 @@ from __future__ import with_statement
 import os
 import sys
 import errno
+#import time
 from vault_api import get_secrets
 from logger import VaultfsLogger
 
@@ -45,7 +46,7 @@ class vault_fuse(Operations):
 
     def getattr(self, path, fh=None):
         full_path = self._full_path(path)
-
+        created = False
         if not os.path.exists(full_path):
             secret_name = os.path.basename(full_path)
             #FIXME The fuck are those files
@@ -60,6 +61,7 @@ class vault_fuse(Operations):
                         with open(full_path, "w") as f:
                             f.write(result)
                         f.close()
+                        created = True
                         break
                     elif status == "Forbidden":
                         self.log.error("{}: {}".format(status, result))
@@ -72,10 +74,12 @@ class vault_fuse(Operations):
                         break
                 if (notFound == len(self.secrets_path)):
                     self.log.error("Can't find secret {} in provided secret engines: {} ".format(secret_name, ', '.join(self.secrets_path)))
-        else:
-            pass
             # check checksum and compare files
         st = os.lstat(full_path)
+        # if not created:
+        #     print(time.ctime(st.st_atime))
+        #     print(st.st_atime)
+        #     pass
         return dict((key, getattr(st, key)) for key in ('st_atime', 'st_ctime',
                      'st_gid', 'st_mode', 'st_mtime', 'st_nlink', 'st_size', 'st_uid', 'st_blocks'))
 
