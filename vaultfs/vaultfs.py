@@ -27,6 +27,14 @@ def main():
 
     args = parser.parse_args()
 
+    config_file = ConfigParser()
+    if args.config:
+        config_file.read(args.config)
+
+    # print (config_file.sections())
+    # print(config_file.get("main", 'param'))
+    # print(config_file.["main"]['param']
+
     # FIXME: Add some controls over mountpoint/local (should be a folder), remote should be reachable payload should exist
     mountpoint = args.mountpoint
     local = args.local
