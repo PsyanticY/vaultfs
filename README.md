@@ -48,3 +48,14 @@ TODO:
 - Hardin the logging
 - Implement rotating token and generating them from a role id. (maybe ?)
 - Implement getting configs from a file (that we may put in /etc/)
+
+
+### Notes
+
+Using a non Empty folder as the mountpoint fail with this error: 
+```bash
+fuse: mountpoint is not empty
+fuse: if you are sure this is safe, use the 'nonempty' mount option
+```
+As mentioned in the error message to work aroud this we need to add `nonempty=True` as a FUSE function parameter.==> Mounting to a nomempty folder cause the files in there to desappear so it makes sense to copy them somewhere else (best is in local cache)
+
