@@ -14,18 +14,20 @@ sudo python3.6 setup.py install
 ## Usage
 
 ```bash
-usage: vaultfs [-h] [-c] -m  -l  -r  -s  -p
+usage: vaultfs.py [-h] [-c] [-m] [-l] [-r] [-s] [-p]
 
 Vault fuse file system
 
 optional arguments:
   -h, --help            show this help message and exit
-  -c , --config         Config file.
+  -c , --config         Configuration file.
   -m , --mountpoint     where the fuse filesystem will be mounted.
   -l , --local          credentials local path after being pulled from vault.
   -r , --remote         Vault Server HTTPS address.
   -s , --secrets-path   List of secrets path in the Vault server.
-  -p , --payload        Vault authentication token.
+  -p , --payload        .Vault authentication token
+
+Note: arguments: "--mountpoint", "--local", "--remote", "--secetes-path" and "--payload" are required when "--config" is missing
 ```
 
 *This is a WIP*
@@ -47,7 +49,7 @@ TODO:
 - Make sure the program checks vault for existing file for new version. (use hashlib)
 - Hardin the logging
 - Implement rotating token and generating them from a role id. (maybe ?)
-- Implement getting configs from a file (that we may put in /etc/)
+- Implement getting configs from a file (that we may put in /etc/) \[done\]
 
 
 ### Notes

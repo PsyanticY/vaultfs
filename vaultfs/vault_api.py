@@ -1,4 +1,4 @@
-from vaultfs.logger import VaultfsLogger
+import logger
 import argparse
 import requests
 import os.path
@@ -9,19 +9,24 @@ import sys
 def check_remote(remote):
     try:
         r = requests.get(remote,timeout=5)
-        # r.raise_for_status()
     except requests.exceptions.RequestException as e:
         # implement logger here 
         #log_api.error(e)
         sys.exit(1)
 
-def check_local(folder):
+def check_folder(folder):
     if os.path.isdir(folder):
         return
     else:
-        #log
+        #log.error
         sys.exit(1)
 
+def check_file(file):
+    if os.path.isfile(file):
+        return
+    else:
+        #log.error
+        sys.exit(1)
 
 def _auth_payload(payload):
 

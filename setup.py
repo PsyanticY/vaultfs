@@ -25,6 +25,7 @@ setup(name='vaultfs',
       platforms=["Linux"],
       packages=["vaultfs"],
       install_requires=install_requirements,
+      data_files =[('/etc', ['config/vaultfs.cfg'])],
       classifiers=[
         'Development Status :: 1 - Development',
         'Intended Audience :: Security/Automation',
