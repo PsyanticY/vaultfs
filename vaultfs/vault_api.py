@@ -5,27 +5,27 @@ import os.path
 import json
 import sys
 
-#log = VaultfsLogger()
+#log = logger.VaultfsLogger()
 def check_remote(remote):
     try:
         r = requests.get(remote,timeout=5)
     except requests.exceptions.RequestException as e:
         # implement logger here 
-        #log_api.error(e)
+        #log.error(e)
         sys.exit(1)
 
 def check_folder(folder):
     if os.path.isdir(folder):
         return
     else:
-        #log.error
+        #log.error("daaa")
         sys.exit(1)
 
 def check_file(file):
     if os.path.isfile(file):
         return
     else:
-        #log.error
+        #log.error("dddd")
         sys.exit(1)
 
 def _auth_payload(payload):

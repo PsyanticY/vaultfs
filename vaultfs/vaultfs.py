@@ -1,6 +1,7 @@
 import argparse
 import sys
 from fuse import FUSE
+# import logger
 # import vaultfs
 # from vaultfs.vault_fuse import vault_fuse
 # from vaultfs.vault_api import check_remote, check_local
@@ -38,10 +39,10 @@ def main():
     
     config_file = ConfigParser()
     if args.config:
-        check_local(args.config)
+        check_file(args.config)
         config_file.read(args.config)
         if not config_file.has_section("main"):
-            # log.error("Section 'main' was not found in the config fail")
+            log.error("Section 'main' was not found in the config file")
             sys.exit(1)
 
         if args.local:
@@ -60,7 +61,7 @@ def main():
             try:
                 remote = config_file.get("main", "remote").rstrip('/')
             except NoOptionError as e:
-                # log.error (e)
+                log.error(e)
                 sys.exit(1)
 
         if args.payload:
@@ -69,7 +70,7 @@ def main():
             try:
                 payload = config_file.get("main", "payload")
             except NoOptionError as e:
-                # log.error (e)
+                log.error(e)
                 sys.exit(1)
 
         if args.secrets_path:
@@ -78,7 +79,7 @@ def main():
             try:
                 secrets_path = config_file.get("main", "secrets_path")
             except NoOptionError as e:
-                # log.error (e)
+                log.error(e)
                 sys.exit(1)
 
     else:
@@ -90,8 +91,8 @@ def main():
 
     # initial checks
     check_remote(remote)
-    check_local(local)
-    check_local(mountpoint)
+    check_folder(local)
+    check_folder(mountpoint)
     check_file(payload)
     sys.exit(1)
     
