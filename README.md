@@ -47,7 +47,7 @@ the system/human will expect files to be in the mountpoint, `vaultfs` will first
 TODO:
 - Make sure the mount point is empty before mounting the system/move file to th cache if possible.
 - Make sure the program checks vault for existing file for new version. (use hashlib)
-- Hardin the logging
+- Hardin the logging. \[done\]
 - Implement rotating token and generating them from a role id. (maybe ?)
 - Implement getting configs from a file (that we may put in /etc/) \[done\]
 

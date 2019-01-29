@@ -7,7 +7,7 @@ import errno
 # from vaultfs.vault_api import get_secrets
 # from vaultfs.logger import VaultfsLogger
 import vault_api
-import logger
+from logger import VaultfsLogger
 
 from fuse import FUSE, FuseOSError, Operations
 
