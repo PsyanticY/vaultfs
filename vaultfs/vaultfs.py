@@ -1,20 +1,22 @@
 import argparse
 import sys
 from fuse import FUSE
-# import logger
+from logger import VaultfsLogger
 # import vaultfs
 # from vaultfs.vault_fuse import vault_fuse
 # from vaultfs.vault_api import check_remote, check_local
-from configparser import ConfigParser, NoSectionError, NoOptionError
+from configparser import ConfigParser, NoOptionError
 import vault_fuse
 from vault_api import check_remote, check_folder, check_file
+
+# setting logger.
+log = VaultfsLogger()
 
 def vaultfs(mountpoint, local, remote, payload, secrets_path):
     FUSE(vault_fuse(local, remote, payload, secrets_path), mountpoint, nothreads=True,
          foreground=True)
 
 def main():
-
     # FIXME: add a timeout parameter
     # FIXME: add a data_content parameter 
     
@@ -40,7 +42,11 @@ def main():
     config_file = ConfigParser()
     if args.config:
         check_file(args.config)
-        config_file.read(args.config)
+        try:
+            config_file.read(args.config)
+        except Exception as e:
+            log.error(e)
+
         if not config_file.has_section("main"):
             log.error("Section 'main' was not found in the config file")
             sys.exit(1)
@@ -94,6 +100,7 @@ def main():
     check_folder(local)
     check_folder(mountpoint)
     check_file(payload)
+    print("success")
     sys.exit(1)
     
     vaultfs(mountpoint, local, remote,  payload, secrets_path)

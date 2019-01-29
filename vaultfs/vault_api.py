@@ -1,31 +1,32 @@
-import logger
+from  logger import VaultfsLogger
 import argparse
 import requests
 import os.path
 import json
 import sys
 
-#log = logger.VaultfsLogger()
+# setting logger.
+log = VaultfsLogger()
+
 def check_remote(remote):
     try:
         r = requests.get(remote,timeout=5)
     except requests.exceptions.RequestException as e:
-        # implement logger here 
-        #log.error(e)
+        log.error(e)
         sys.exit(1)
 
 def check_folder(folder):
     if os.path.isdir(folder):
         return
     else:
-        #log.error("daaa")
+        log.error("Failed to find '{}': No such directory".format(folder))
         sys.exit(1)
 
 def check_file(file):
     if os.path.isfile(file):
         return
     else:
-        #log.error("dddd")
+        log.error("Failed to find '{}': No such file".format(file))
         sys.exit(1)
 
 def _auth_payload(payload):
@@ -51,7 +52,7 @@ def get_secrets(payload, remote, secret_path, secret_name, data_key='content', t
         reason = r.reason
         data = r.json()
     except requests.exceptions.RequestException as e:
-        # log.error(e.args[0])
+        log.error(e.args[0])
         # get a better error message
         sys.exit(1)
     if status == 404:

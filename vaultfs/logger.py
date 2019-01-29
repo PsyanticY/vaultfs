@@ -31,13 +31,17 @@ class VaultfsLogger(object):
 
     def __init__(self, name='VaultFS', level=logging.INFO):
         self.logger = logging.getLogger(name)
-        self.logger.setLevel(level)
+        if not self.logger.handlers:
+            self.logger = logging.getLogger(name)
+            self.logger.setLevel(level)
 
-        console_handler = logging.StreamHandler()
-        # formatter
-        my_formatter = Formatter()
-        console_handler.setFormatter(my_formatter)
-        self.logger.addHandler(console_handler)
+            console_handler = logging.StreamHandler()
+            # formatter
+            my_formatter = Formatter()
+            console_handler.setFormatter(my_formatter)
+            self.logger.addHandler(console_handler)
+        else:
+            return None
 
     def debug(self, msg):
         self.logger.debug(msg)
