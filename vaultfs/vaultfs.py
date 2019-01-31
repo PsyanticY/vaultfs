@@ -6,7 +6,7 @@ from logger import VaultfsLogger
 # from vaultfs.vault_fuse import vault_fuse
 # from vaultfs.vault_api import check_remote, check_local
 from configparser import ConfigParser, NoOptionError
-import vault_fuse
+from vault_fuse import vault_fuse
 from vault_api import check_remote, check_folder, check_file
 
 # setting logger.
@@ -101,7 +101,6 @@ def main():
     check_folder(mountpoint)
     check_file(payload)
     print("success")
-    sys.exit(1)
     
     vaultfs(mountpoint, local, remote,  payload, secrets_path)
 
