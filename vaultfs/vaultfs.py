@@ -84,7 +84,7 @@ def main():
             secrets_path = args.secrets_path
         else:
             try:
-                secrets_path = ast.literal_eval((config_file.get("main", "secrets_path"))
+                secrets_path = ast.literal_eval(config_file.get("main", "secrets_path"))
             except NoOptionError as e:
                 log.error(e)
                 sys.exit(1)
