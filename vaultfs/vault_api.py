@@ -1,4 +1,4 @@
-from  logger import VaultfsLogger
+from  vaultfs.logger import VaultfsLogger
 import argparse
 import requests
 import os.path
@@ -68,6 +68,3 @@ def get_secrets(payload, remote, secret_path, secret_name, data_key='content', t
         return (credentials, "Success")
     else:
         return (data, reason)
-        
-
-    

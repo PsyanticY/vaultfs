@@ -1,13 +1,13 @@
 import argparse
 import sys
 from fuse import FUSE
-from logger import VaultfsLogger
+from vaultfs.logger import VaultfsLogger
 # import vaultfs
-# from vaultfs.vault_fuse import vault_fuse
-# from vaultfs.vault_api import check_remote, check_local
+from vaultfs.vault_fuse import vault_fuse
+from vaultfs.vault_api import check_remote, check_folder, check_file
 from configparser import ConfigParser, NoOptionError
-from vault_fuse import vault_fuse
-from vault_api import check_remote, check_folder, check_file
+# from vault_fuse import vault_fuse
+# from vault_api import check_remote, check_folder, check_file
 
 # setting logger.
 log = VaultfsLogger()

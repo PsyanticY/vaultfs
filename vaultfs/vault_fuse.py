@@ -3,11 +3,12 @@ from __future__ import with_statement
 import os
 import sys
 import errno
-#import time
-from vault_api import get_secrets
+from vaultfs.vault_api import get_secrets
+from vaultfs.logger import VaultfsLogger
 # from vaultfs.logger import VaultfsLogger
-import vault_api
-from logger import VaultfsLogger
+#import vault_api
+#import time
+
 
 from fuse import FUSE, FuseOSError, Operations
 
