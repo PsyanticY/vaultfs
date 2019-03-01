@@ -105,8 +105,17 @@ class vault_fuse(Operations):
     def mkdir(self, path, mode):
         return os.mkdir(self._full_path(path), mode)
 
+    def unlink(self, path):
+        return os.unlink(self._full_path(path))
+
+    def symlink(self, name, target):
+        return os.symlink(name, self._full_path(target))
+
     def rename(self, old, new):
         return os.rename(self._full_path(old), self._full_path(new))
+
+    def link(self, target, name):
+        return os.link(self._full_path(target), self._full_path(name))
 
     def statfs(self, path):
         full_path = self._full_path(path)
