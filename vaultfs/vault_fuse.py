@@ -95,6 +95,18 @@ class vault_fuse(Operations):
         for r in dirents:
             yield r
 
+    def mknod(self, path, mode, dev):
+        return os.mknod(self._full_path(path), mode, dev)
+
+    def rmdir(self, path):
+        full_path = self._full_path(path)
+        return os.rmdir(full_path)
+
+    def mkdir(self, path, mode):
+        return os.mkdir(self._full_path(path), mode)
+
+    def rename(self, old, new):
+        return os.rename(self._full_path(old), self._full_path(new))
 
     def statfs(self, path):
         full_path = self._full_path(path)
@@ -125,6 +137,11 @@ class vault_fuse(Operations):
     def write(self, path, buf, offset, fh):
         os.lseek(fh, offset, os.SEEK_SET)
         return os.write(fh, buf)
+
+    def truncate(self, path, length, fh=None):
+        full_path = self._full_path(path)
+        with open(full_path, 'r+') as f:
+            f.truncate(length)
 
     def flush(self, path, fh):
         return os.fsync(fh)
