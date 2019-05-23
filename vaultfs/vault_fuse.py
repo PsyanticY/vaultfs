@@ -3,23 +3,25 @@ from __future__ import with_statement
 import os
 import sys
 import errno
-from vaultfs.vault_api import get_secrets
+import time
+from datetime import datetime
+from vaultfs.vault_api import get_secrets, secrets_time
 from vaultfs.logger import VaultfsLogger
-# from vaultfs.logger import VaultfsLogger
-#import vault_api
-#import time
+#from logger import VaultfsLogger
+#from vault_api import get_secrets, secrets_time
 
 
 from fuse import FUSE, FuseOSError, Operations
 
 
 class vault_fuse(Operations):
-    def __init__(self, root, remote, payload, secrets_path):#, data_key):
+    def __init__(self, root, remote, payload, secrets_path, recheck_timestamp):#, data_key):
         self.root = root
         self.remote = remote
         self.payload = payload
         self.log = VaultfsLogger()
         self.secrets_path = secrets_path
+        self.recheck_timestamp = recheck_timestamp
         #self.data_key = data_key
 
     # Helpers
@@ -49,43 +51,38 @@ class vault_fuse(Operations):
 
     def getattr(self, path, fh=None):
         full_path = self._full_path(path)
-        created = False
-        if not os.path.exists(full_path):
-            secret_name = os.path.basename(full_path)
-            #FIXME The fuck are those files
-            if secret_name in ".xdg-volume-info" "autorun.inf" :
-                pass
-            else:
+        secret_name = os.path.basename(full_path)
+        #FIXME The fuck are those files
+        if secret_name in ".xdg-volume-info" "autorun.inf" :
+            pass
+        else:
+            if not os.path.exists(full_path):
                 self.log.info("Looking for {} in {}".format(secret_name, self.remote))
-                notFound = 0
-                for i in range(0,len(self.secrets_path)):
-                    (result, status) = get_secrets(self.payload, self.remote, self.secrets_path[i], secret_name)
-                    if status == "Success":
-                        with open(full_path, "w") as f:
-                            f.write(result)
-                        f.close()
-                        created = True
-                        break
-                    elif status == "Forbidden":
-                        self.log.error("{}: {}".format(status, result))
-                        # quit the loop since we can't authenticate to the server
-                        break
-                    elif status == "NotFound":
-                        notFound += 1
-                    else : 
-                        self.log.error("{}: {}".format(status, result))
-                        break
-                if (notFound == len(self.secrets_path)):
-                    self.log.error("Can't find secret {} in provided secret engines: {} ".format(secret_name, ', '.join(self.secrets_path)))
-            # check checksum and compare files
+                get_secrets(self.payload, self.remote, self.secrets_path, secret_name, full_path)
+            if os.path.exists(full_path):
+                last_modif = getattr(os.lstat(full_path), 'st_mtime')
+                # if last modification was a week ago check for updates form vault
+                # swithc to >
+                time_now = time.mktime(time.strptime(str(datetime.utcnow()).split(".", 1)[0], '%Y-%m-%d %H:%M:%S'))
+                # hack to convert st_mtime to UTC
+                diff = time_now - time.time()
+                last_modif = last_modif + diff
+                if (time_now - last_modif) >= self.recheck_timestamp:
+                    creation_time = secrets_time(self.payload, self.remote, self.secrets_path, secret_name)
+                    if creation_time == None:
+                        self.log.warning("secret `{}` not found in vault, ignoring...".format(secret_name))
+                        return
+                    else:
+                        creation_time_epoch = time.mktime(time.strptime(creation_time, '%Y-%m-%dT%H:%M:%S'))
+                        if creation_time_epoch < last_modif:
+                            os.utime(full_path)
+                        else:
+                            self.log.info("updating `{}` from vault...".format(secret_name))
+                            get_secrets(self.payload, self.remote, self.secrets_path, secret_name, full_path)
+
         st = os.lstat(full_path)
-        # if not created:
-        #     print(time.ctime(st.st_atime))
-        #     print(st.st_atime)
-        #     pass
         return dict((key, getattr(st, key)) for key in ('st_atime', 'st_ctime',
                      'st_gid', 'st_mode', 'st_mtime', 'st_nlink', 'st_size', 'st_uid', 'st_blocks'))
-
 
     def readdir(self, path, fh):
         full_path = self._full_path(path)

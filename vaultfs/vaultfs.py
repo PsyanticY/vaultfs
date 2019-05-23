@@ -3,18 +3,19 @@ import sys
 from fuse import FUSE
 import ast
 from vaultfs.logger import VaultfsLogger
-# import vaultfs
+#from logger import VaultfsLogger
+import vaultfs
 from vaultfs.vault_fuse import vault_fuse
 from vaultfs.vault_api import check_remote, check_folder, check_file
 from configparser import ConfigParser, NoOptionError
-# from vault_fuse import vault_fuse
-# from vault_api import check_remote, check_folder, check_file
+#from vault_fuse import vault_fuse
+#from vault_api import check_remote, check_folder, check_file
 
 # setting logger.
 log = VaultfsLogger()
 
 def vaultfs(mountpoint, local, remote, payload, secrets_path):
-    FUSE(vault_fuse(local, remote, payload, secrets_path), mountpoint, nothreads=True,
+    FUSE(vault_fuse(local, remote, payload, secrets_path, recheck_timestamp=604800), mountpoint, nothreads=True,
          foreground=True)
 
 def main():

@@ -45,13 +45,13 @@ Note: arguments: "--mountpoint", "--local", "--remote", "--secetes-path" and "--
 the system/human will expect files to be in the mountpoint, `vaultfs` will first fetch them from the vault and copy them to the local path, hitherto the system/programs/human can find the file in the expected destination.
 
 TODO:
-- Make sure the mount point is empty before mounting the system/move file to th cache if possible.
-- Make sure the program checks vault for existing file for new version. (use hashlib)
+- Make sure the mount point is empty before mounting the system/move file to th cache if possible. (this can currently be done by a prescript in the systemd unit)
+- Make sure the program checks vault for existing file for new version. (use hashlib) (no we are using timestamps for that)
 - Hardin the logging. \[done\]
-- Implement rotating token and generating them from a role id. (maybe ?)
+- Implement rotating token and generating them from a role id. (No for the moment at least) (this wil ladd complexity beyond the scope of the package)
 - Implement getting configs from a file (that we may put in /etc/) \[done\]
 - Change the look with list call and search
-- Explore how to remove the cache entirely
+- Explore how to remove the cache entirely (nah, let's just implement a correct caching mecanism)
 ### Notes
 
 Using a non Empty folder as the mountpoint fail with this error: 
@@ -61,3 +61,8 @@ fuse: if you are sure this is safe, use the 'nonempty' mount option
 ```
 As mentioned in the error message to work aroud this we need to add `nonempty=True` as a FUSE function parameter.==> Mounting to a nomempty folder cause the files in there to desappear so it makes sense to copy them somewhere else (best is in local cache)
 
+## testing
+ use python3.6 for no since some issues happen with 3.7.
+```bash
+python3.6 vaultfs/vaultfs.py --config config/vaultfs.cfg
+```
