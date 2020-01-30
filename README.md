@@ -66,3 +66,36 @@ As mentioned in the error message to work aroud this we need to add `nonempty=Tr
 ```bash
 python3.6 vaultfs/vaultfs.py --config config/vaultfs.cfg
 ```
+
+## Docker
+
+The Dockerfile facilitates mounting of remote vaults into the local filesystem
+or other Docker containers. The image implements a Docker volume on the cheap:
+Used with proper  creation options (see below) , you should be able to
+bind-mount back the vault onto a host directory. This directory will
+make the content of the vault available to processes, but also all other
+containers on the host.
+
+Provided the existence of a directory called `/mnt/vault` on the host, a file
+called `auth.tkn` in the current directory and that you have built the image
+`vaultfs`, the following command would mount a remote vault, and bind-mount the
+remote vault onto the host's `/mnt/vault` in a way that makes the remote secrets
+accessible to processes and/or other containers running on the same host.
+
+```shell
+docker run -it --rm \
+    --device /dev/fuse \
+    --cap-add SYS_ADMIN \
+    --security-opt "apparmor=unconfined" \
+    -v $(pwd)/auth.tkn:/data/auth.tkn:ro \
+    -v /mnt/vault:/vault:rshared \
+    vaultfs \
+    -r https://your.remote.vault/ \
+    -s secrets \
+    -p /data/auth.tkn
+```
+
+The `--device`, `--cap-add` and `--security-opt` options and their values are to
+make sure that the container will be able to make available the vault using
+FUSE. `rshared` is what ensures that bind mounting makes the files and
+directories available back to the host and recursively to other containers.
