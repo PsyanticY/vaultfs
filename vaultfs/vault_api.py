@@ -77,7 +77,7 @@ def get_secrets(payload, remote, secret_path, secret_name, full_path, data_key='
             log.error("{}: {}".format(reason, data))
             # quit the loop since we can't authenticate to the server
             break
-        elif reason == "NotFound":
+        elif reason == "Not Found":
             notFound += 1
         else:
             log.error("{}: {}".format(reason, data))
