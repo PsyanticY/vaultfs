@@ -83,7 +83,7 @@ def get_secrets(payload, remote, secret_path, secret_name, full_path, data_key='
             log.error("{}: {}".format(reason, data))
             break
     if (notFound == len(secret_path)):
-        log.error("Can't find secret {} in provided secret engines: {} ".format(secret_name, ', '.join(self.secrets_path)))
+        log.error("Can't find secret {} in provided secret engines: {} ".format(secret_name, ', '.join(secret_path)))
 
 def secrets_time(payload, remote, secret_path, secret_name, timeout=1):
 
