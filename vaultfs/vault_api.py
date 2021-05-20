@@ -48,10 +48,6 @@ def get_secrets(payload, remote, secret_path, secret_name, full_path, data_key='
     headers = {"X-Vault-Token": _auth_payload(payload)}
     error_count = 0
     notFound = 0
-    tokenised=secret_name.split(".")
-    if len(tokenised) >= 2:
-        data_key=tokenised.pop(-1)    
-        secret_name=".".join(tokenised)
     for i in range(0,len(secret_path)):
         remote_credentials_endpoint = remote + "/v1/" + secret_path[i] + "/data/" + secret_name
         try:
@@ -90,10 +86,6 @@ def secrets_time(payload, remote, secret_path, secret_name, timeout=1):
     # maybe an object for these remote, secret_path, secret_name
     headers = {"X-Vault-Token": _auth_payload(payload)}
     exist = False
-    tokenised=secret_name.split(".")
-    if len(tokenised) >= 2:
-        data_key=tokenised.pop(-1)    
-        secret_name=".".join(tokenised)
     for i in range(0,len(secret_path)):
         remote_credentials_endpoint = remote + "/v1/" + secret_path[i] + "/metadata/" + secret_name
         try:
